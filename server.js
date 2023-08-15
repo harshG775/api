@@ -1,20 +1,26 @@
 "use strict"
-const express = require("express");
-const fs = require("fs");
-const path = require("path");
+import express from "express";
+import path ,{dirname} from "path";
 const app = express();
+// __dirname
+import { fileURLToPath } from 'url';
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
-let db = fs.readFileSync("./database/db.json", "utf-8")
-let parsed = JSON.parse(db)
+import fetching from "./modules/fetching.js";
 
 app.use(express.static(path.join(__dirname,"public")))
+
+
 
 // main
 app.get("/", (req, res) => {
     res.sendFile("./public/index.html")
 });
-app.get("/api/data", (req, res) => {
-    res.json(parsed);
+app.get("/api/trending/all/:id", (req, res) => {
+    console.log(req.params)
+    fetching.getAllTrendingPage().then(d=>
+        res.json(d)
+    )
 });
 
 const PORT = process.env.PORT || 3000;
