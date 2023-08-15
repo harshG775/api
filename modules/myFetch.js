@@ -1,3 +1,4 @@
+import fetch from "node-fetch";
 export default async (url) => {
     try {
         const response = await fetch(url);
